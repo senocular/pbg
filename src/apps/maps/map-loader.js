@@ -59,13 +59,11 @@ function populateMapSelect() {
     }
 }
 
-export function init(map, grid, onRender) {
+export function init(map, grid) {
     populateMapSelect();
     loadMap(map, grid);
-    onRender();
 
     mapSelect.onchange = (event) => {
         loadMap(maps[mapSelect.value], grid);
-        onRender();
     };
 }

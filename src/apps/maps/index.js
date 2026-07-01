@@ -1,5 +1,4 @@
-import { Grid } from "./Grid.js";
-import { init } from "./map-loader.js";
+import { init as initMapLoader } from "./map-loader.js";
 import { getDesignerTool, setDesignerBlockProperties, getDesignerBlockProperties } from "./editor.js";
 import "../../components/pbg-grid-map/PBGGridMap.js";
 import "../../components/pbg-grid-block/PBGGridBlock.js";
@@ -31,31 +30,4 @@ pbgGridMap.addEventListener("cell-click", (event) => {
     }
 });
 
-const gridEl = document.getElementById("playing-field");
-
-const gridStyle = getComputedStyle(gridEl);
-const gridWidth = +gridStyle.getPropertyValue("--grid-width");
-const gridHeight = +gridStyle.getPropertyValue("--grid-height");
-const gridCellSize = +gridStyle.getPropertyValue("--grid-cell-size");
-const grid = new Grid(gridWidth, gridHeight, gridCellSize);
-
-init(null, pbgGridMap, () => renderGridInto(grid, gridEl));
-
-function renderGridInto(grid, element) {
-    const frag = document.createDocumentFragment();
-    for (const [index, block] of grid.map.entries()) {
-        if (!block) {
-            continue;
-        }
-
-        const [x, y] = grid.coordsFromIndex(index);
-        const el = document.createElement("div");
-        el.dataset.block = block;
-        el.dataset.x = x;
-        el.dataset.y = y;
-        el.style.left = `${x * grid.cellSize}px`;
-        el.style.top = `${y * grid.cellSize}px`;
-        frag.appendChild(el);
-    }
-    element.replaceChildren(frag);
-}
+initMapLoader(null, pbgGridMap);
