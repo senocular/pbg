@@ -1,0 +1,126 @@
+<style>
+    :host {
+        display: inline-block;
+        --spacing: 0.75em;
+        --button-padding: 0.5em;
+        --roundness: 1em;
+        --highlight: #e60012;
+        --highlight-text: white;
+        --depth: 0.15em;
+        --padding-factor: 1;
+        margin-block: 1em;
+    }
+
+    #kbd {
+        border: 2px solid black;
+        border-radius: var(--roundness);
+        box-shadow: var(--depth) var(--depth) black;
+
+        button {
+            font-family: monospace;
+            font-size: 1em;
+            font-weight: bold;
+            padding: calc(var(--button-padding) * var(--padding-factor))
+                calc(var(--button-padding) * var(--padding-factor) * 2);
+            border: 2px solid black;
+            border-radius: 0;
+            outline: none;
+            aspect-ratio: 1 / 1;
+            box-shadow: var(--depth) var(--depth) black;
+            margin: 0.25em;
+
+            &.active {
+                background-color: var(--highlight);
+                color: var(--highlight-text);
+                box-shadow: none;
+                top: var(--depth);
+                left: var(--depth);
+                position: relative;
+            }
+        }
+    }
+    #shoulder {
+        margin: var(--spacing);
+        display: flex;
+        button {
+            flex-grow: 1;
+            aspect-ratio: 0;
+        }
+        [name="shoulder-left"] {
+            border-top-left-radius: 0.75em;
+        }
+        [name="shoulder-right"] {
+            border-top-right-radius: 0.75em;
+        }
+    }
+
+    #face {
+        margin: var(--spacing);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    #face-buttons {
+        display: flex;
+        button {
+            border-radius: 100%;
+        }
+    }
+
+    #d-pad {
+        border-collapse: collapse;
+        margin: 0.25em;
+
+        button {
+            margin: 0;
+            --padding-factor: 0.75;
+        }
+
+        td {
+            padding: 0;
+        }
+    }
+</style>
+<div id="kbd">
+    <div id="shoulder">
+        <button data-pad-id="4" data-kbd-key="l" name="shoulder-left"><span>L</span></button>
+        <button data-pad-id="5" data-kbd-key="r" name="shoulder-right"><span>R</span></button>
+    </div>
+    <div id="face">
+        <table id="d-pad">
+            <!-- 
+            ← → ↑ ↓
+            ⬁ ⬀ ⬂ ⬃ ⇦ ⇨ ⇧ ⇩ 
+            ⇧ ␣
+            -->
+            <tr>
+                <td></td>
+                <td>
+                    <button data-pad-id="12" data-kbd-key="ArrowUp" name="dpad-up"><span>↑</span></button>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    <button data-pad-id="14" data-kbd-key="ArrowLeft" name="dpad-left"><span>←</span></button>
+                </td>
+                <td></td>
+                <td>
+                    <button data-pad-id="15" data-kbd-key="ArrowRight" name="dpad-right"><span>→</span></button>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button data-pad-id="13" data-kbd-key="ArrowDown" name="dpad-down"><span>↓</span></button>
+                </td>
+                <td></td>
+            </tr>
+        </table>
+        <div id="face-buttons">
+            <button data-pad-id="0" data-kbd-key="a" name="action-primary"><span>A</span></button>
+            <button data-pad-id="1" data-kbd-key="b" name="action-secondary"><span>B</span></button>
+        </div>
+    </div>
+</div>
