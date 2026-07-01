@@ -36,23 +36,4 @@ export class Grid {
     clear() {
         this.map.length = 0;
     }
-
-    renderInto(element) {
-        const frag = document.createDocumentFragment();
-        for (const [index, block] of this.map.entries()) {
-            if (!block) {
-                continue;
-            }
-
-            const [x, y] = this.coordsFromIndex(index);
-            const el = document.createElement("div");
-            el.dataset.block = block;
-            el.dataset.x = x;
-            el.dataset.y = y;
-            el.style.left = `${x * this.cellSize}px`;
-            el.style.top = `${y * this.cellSize}px`;
-            frag.appendChild(el);
-        }
-        element.replaceChildren(frag);
-    }
 }

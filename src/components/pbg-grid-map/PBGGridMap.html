@@ -1,0 +1,28 @@
+<style>
+    :host {
+        --cell-size: 10px;
+        --grid-width: 10;
+        --grid-height: 10;
+        display: block;
+        width: calc(var(--grid-width) * var(--cell-size));
+
+        --grid-color: #40904050;
+        background-color: #ab9;
+        background-size: var(--cell-size) var(--cell-size);
+        background-image:
+            linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+            linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+    }
+    #cells {
+        min-width: 10px;
+        min-height: 10px;
+        line-height: 0;
+    }
+    .cell {
+        width: var(--cell-size);
+        height: var(--cell-size);
+        display: inline-block;
+        vertical-align: top;
+    }
+</style>
+<div id="cells"></div>

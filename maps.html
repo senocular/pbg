@@ -9,12 +9,99 @@
         <script src="src/apps/maps/index.js" type="module"></script>
     </head>
     <body>
-        <p>
-            <label>
-                Maps:
-                <select id="map-select"></select>
-            </label>
-        </p>
-        <div id="playing-field"></div>
+        <div style="display: flex; justify-content: space-between">
+            <section>
+                <p>
+                    <label>
+                        Maps:
+                        <select id="map-select"></select>
+                    </label>
+                </p>
+                <pbg-grid-map style="--cell-size: 40px"></pbg-grid-map>
+                <div id="playing-field"></div>
+            </section>
+            <section style="flex-basis: 300px">
+                <fieldset id="icon-designer">
+                    <legend>Editor</legend>
+                    <p>
+                        <label><input type="radio" name="tool" value="place" checked /> Place</label>
+                        <br />
+                        <label><input type="radio" name="tool" value="erase" /> Erase</label>
+                        <br />
+                        <label><input type="radio" name="tool" value="select" /> Select</label>
+                    </p>
+                    <hr />
+                    <p>
+                        <span class="block-container">
+                            <pbg-grid-block id="block-preview"></pbg-grid-block>
+                        </span>
+                    </p>
+                    <p>
+                        <label>
+                            Shape
+                            <br />
+                            <select id="shape-select">
+                                <option value="square">Square</option>
+                                <option value="circle" selected>Circle</option>
+                            </select>
+                        </label>
+                    </p>
+                    <p>
+                        <label>
+                            <input id="bg-color" type="color" value="#33cd32" />
+                            Background color
+                        </label>
+                    </p>
+                    <p>
+                        <label>
+                            Text
+                            <br />
+                            <input id="content-text" type="text" value="P" />
+                        </label>
+                    </p>
+                    <p>
+                        <label>
+                            <input id="text-color" type="color" value="#FFFFFF" />
+                            Text color
+                        </label>
+                    </p>
+                    <hr />
+                    <p id="swatches-list">
+                        <span class="block-container">
+                            <pbg-grid-block
+                                id="block-preview"
+                                data-shape="circle"
+                                data-text="P"
+                                style="--bg-color: #33cd32; --text-color: #ffffff"
+                            ></pbg-grid-block>
+                        </span>
+                        <span class="block-container">
+                            <pbg-grid-block
+                                id="block-preview"
+                                data-shape="circle"
+                                data-text="E"
+                                style="--bg-color: #ff0000; --text-color: #ffffff"
+                            ></pbg-grid-block>
+                        </span>
+                        <span class="block-container">
+                            <pbg-grid-block
+                                id="block-preview"
+                                data-shape="circle"
+                                data-text=""
+                                style="--bg-color: #ffffff; --text-color: #ffffff"
+                            ></pbg-grid-block>
+                        </span>
+                        <span class="block-container">
+                            <pbg-grid-block
+                                id="block-preview"
+                                data-shape="square"
+                                data-text=""
+                                style="--bg-color: #993300; --text-color: #ffffff"
+                            ></pbg-grid-block>
+                        </span>
+                    </p>
+                </fieldset>
+            </section>
+        </div>
     </body>
 </html>

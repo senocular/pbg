@@ -1,0 +1,33 @@
+<style>
+    :host {
+        --size: var(--block-size, 40px);
+        --bg-color: #ffffff;
+        --text-color: #ffffff;
+        --text-content: attr(data-text, ""); /* Will this work? */
+    }
+
+    #icon {
+        width: var(--size);
+        height: var(--size);
+        display: inline-flex;
+        background-color: var(--bg-color);
+
+        &::before {
+            content: var(--text-content);
+            display: inline-block;
+            margin: auto;
+            font-size: calc(var(--size) / 3);
+            color: var(--text-color);
+        }
+    }
+
+    :host([data-shape="circle"]) #icon {
+        border: 1px solid black;
+        box-sizing: border-box;
+        width: calc(var(--size) * 0.8);
+        height: calc(var(--size) * 0.8);
+        margin: calc(var(--size) * 0.1);
+        border-radius: 100%;
+    }
+</style>
+<div id="icon"></div>

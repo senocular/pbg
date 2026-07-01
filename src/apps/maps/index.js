@@ -1,8 +1,37 @@
 import { Grid } from "./Grid.js";
-import { maps } from "./maps.js";
+import { init } from "./map-loader.js";
+import { getDesignerTool, setDesignerBlockProperties, getDesignerBlockProperties } from "./editor.js";
+import "../../components/pbg-grid-map/PBGGridMap.js";
+import "../../components/pbg-grid-block/PBGGridBlock.js";
+
+const pbgGridMap = document.querySelector("pbg-grid-map");
+pbgGridMap.addEventListener("cell-click", (event) => {
+    const { cell } = event.detail;
+
+    switch (getDesignerTool()) {
+        case "select": {
+            const block = cell.querySelector("pbg-grid-block");
+            if (!block) {
+                return;
+            }
+            const blockProperties = block.getProperties();
+            setDesignerBlockProperties(blockProperties);
+            break;
+        }
+        case "place": {
+            const block = document.createElement("pbg-grid-block");
+            block.setProperties(getDesignerBlockProperties());
+            cell.replaceChildren(block);
+            break;
+        }
+        case "erase": {
+            cell.replaceChildren();
+            break;
+        }
+    }
+});
 
 const gridEl = document.getElementById("playing-field");
-const mapSelect = document.getElementById("map-select");
 
 const gridStyle = getComputedStyle(gridEl);
 const gridWidth = +gridStyle.getPropertyValue("--grid-width");
@@ -10,52 +39,23 @@ const gridHeight = +gridStyle.getPropertyValue("--grid-height");
 const gridCellSize = +gridStyle.getPropertyValue("--grid-cell-size");
 const grid = new Grid(gridWidth, gridHeight, gridCellSize);
 
-function loadMap(map) {
-    if (!map) {
-        return;
-    }
+init(null, pbgGridMap, () => renderGridInto(grid, gridEl));
 
-    const charToBlock = {
-        o: "position",
-        X: "bunker",
-        e: "enemy",
-        p: "player",
-    };
-
-    grid.clear();
-
-    for (const [index, char] of map.entries()) {
-        const block = charToBlock[char];
+function renderGridInto(grid, element) {
+    const frag = document.createDocumentFragment();
+    for (const [index, block] of grid.map.entries()) {
         if (!block) {
             continue;
         }
-        grid.setBlock(...grid.coordsFromIndex(index), block);
-    }
 
-    grid.renderInto(gridEl);
+        const [x, y] = grid.coordsFromIndex(index);
+        const el = document.createElement("div");
+        el.dataset.block = block;
+        el.dataset.x = x;
+        el.dataset.y = y;
+        el.style.left = `${x * grid.cellSize}px`;
+        el.style.top = `${y * grid.cellSize}px`;
+        frag.appendChild(el);
+    }
+    element.replaceChildren(frag);
 }
-
-function populateMapSelect() {
-    for (const [name, map] of Object.entries(maps)) {
-        const optionEl = document.createElement("option");
-        optionEl.textContent = name;
-        mapSelect.appendChild(optionEl);
-    }
-}
-
-gridEl.onclick = (event) => {
-    const position = event.target.closest('[data-block="position"]');
-    if (!position) {
-        return;
-    }
-
-    gridEl.querySelectorAll(".active").forEach((el) => el.classList.remove("active"));
-    position.classList.add("active");
-};
-
-mapSelect.onchange = (event) => {
-    loadMap(maps[mapSelect.value]);
-};
-
-populateMapSelect();
-loadMap(Object.values(maps)[0]);
