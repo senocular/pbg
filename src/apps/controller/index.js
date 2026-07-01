@@ -20,7 +20,7 @@ kbdMappingSelect.onchange = () => {
 };
 
 const lines = [];
-const MAX_LINES = 30;
+const MAX_LINES = 25;
 
 controller.addEventListener("active-change", (event) => {
     const { button, isActive } = event.detail;
