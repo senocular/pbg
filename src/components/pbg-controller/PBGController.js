@@ -6,7 +6,7 @@ import { keyboardMappings } from "./keyboardMappings.js";
 
 const template = await loadHTMLTemplate(import.meta.resolve("./PBGController.html"));
 
-export const labelMappings = {
+export const buttonLabelMappings = {
     ArrowUp: "↑",
     ArrowLeft: "←",
     ArrowRight: "→",
@@ -19,7 +19,11 @@ class PBGController extends HTMLElement {
     controllerInput = new ControllerInput();
     keyboardInput = new KeyboardInput();
     activeButtonTracker;
-    frameLoopId;
+
+    /**
+     * @type {number}
+     */
+    frameLoopId = -1;
 
     /**
      * @type {Map<string, HTMLButtonElement>}
@@ -27,9 +31,9 @@ class PBGController extends HTMLElement {
     buttonsByName;
 
     /**
-     * @type {Set<string>}
+     * @type {Map<string, boolean>}
      */
-    activeButtonNames = new Set();
+    buttonsActive;
 
     constructor() {
         super();
@@ -38,10 +42,11 @@ class PBGController extends HTMLElement {
         this.activeButtonTracker = new ActiveButtonTracker(shadow.getElementById("kbd"));
         const buttons = /** @type {HTMLButtonElement[]} */ (Array.from(shadow.querySelectorAll("button")));
         this.buttonsByName = new Map(buttons.map((button) => [button.name, button]));
+        this.buttonsActive = new Map(buttons.map((button) => [button.name, false]));
     }
 
     isActive(buttonName) {
-        return this.activeButtonNames.has(buttonName);
+        return this.buttonsActive.get(buttonName) ?? false;
     }
 
     applyKeyboardMapping(name) {
@@ -58,7 +63,7 @@ class PBGController extends HTMLElement {
             }
 
             button.dataset.kbdKey = key;
-            button.textContent = labelMappings[key] ?? String(key).toUpperCase();
+            button.textContent = buttonLabelMappings[key] ?? String(key).toUpperCase();
         }
     }
 
@@ -71,7 +76,7 @@ class PBGController extends HTMLElement {
             for (const button of this.buttonsByName.values()) {
                 const { padId, kbdKey } = button.dataset;
 
-                const oldIsActive = this.activeButtonNames.has(button.name);
+                const oldIsActive = this.buttonsActive.get(button.name) ?? false;
                 const newIsActive =
                     this.activeButtonTracker.isActive(button) ||
                     this.controllerInput.isActive(padId) ||
@@ -82,12 +87,12 @@ class PBGController extends HTMLElement {
                 }
 
                 if (newIsActive) {
-                    this.activeButtonNames.add(button.name);
                     button.classList.add("active");
                 } else {
-                    this.activeButtonNames.delete(button.name);
                     button.classList.remove("active");
                 }
+
+                this.buttonsActive.set(button.name, newIsActive);
 
                 this.dispatchEvent(
                     new CustomEvent("active-change", {
