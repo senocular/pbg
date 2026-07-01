@@ -17,6 +17,7 @@ function populateMappings() {
 
 kbdMappingSelect.onchange = () => {
     controller.applyKeyboardMapping(kbdMappingSelect.value);
+    kbdMappingSelect.blur();
 };
 
 const lines = [];
