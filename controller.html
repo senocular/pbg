@@ -10,14 +10,18 @@
     </head>
     <body>
         <p>
-            Virtual gamepad capable of capturing inputs from mouse clicks, keyboard keys, or game controllers (tested
-            with Xbox).
+            Virtual gamepad capable of capturing inputs from mouse clicks (SHIFT (<kbd>⇧</kbd>) to lock), keyboard keys,
+            or game controllers (tested with Xbox One controller).
         </p>
-        <p>
+        <p id="options">
             <label>
                 Keyboard mapping:
                 <select id="kbd-mapping-select"></select>
             </label>
+            <br />
+            <label> <input type="checkbox" id="layout-face-check" /> 4 face buttons </label>
+            <br />
+            <label> <input type="checkbox" id="layout-shoulder-check" /> 4 shoulder buttons </label>
         </p>
         <pbg-controller></pbg-controller>
         <p>

@@ -39,19 +39,37 @@
             }
         }
     }
-    #shoulder {
+
+    #shoulder-buttons {
         margin: var(--spacing);
+
+        .shoulder-button-row {
+            display: flex;
+            button {
+                flex-grow: 1;
+                aspect-ratio: 0;
+            }
+            [name="bumper-left"] {
+                border-top-left-radius: 0.75em;
+            }
+            [name="bumper-right"] {
+                border-top-right-radius: 0.75em;
+            }
+            [name="trigger-left"] {
+                border-bottom-left-radius: 0.75em;
+            }
+            [name="trigger-right"] {
+                border-bottom-right-radius: 0.75em;
+            }
+        }
+    }
+
+    #trigger-shoulder-buttons.shoulder-button-row {
+        display: none;
+    }
+
+    :host(.layout-4-shoulder-buttons) #trigger-shoulder-buttons {
         display: flex;
-        button {
-            flex-grow: 1;
-            aspect-ratio: 0;
-        }
-        [name="shoulder-left"] {
-            border-top-left-radius: 0.75em;
-        }
-        [name="shoulder-right"] {
-            border-top-right-radius: 0.75em;
-        }
     }
 
     #face {
@@ -61,11 +79,19 @@
         justify-content: space-between;
     }
 
-    #face-buttons {
+    #face-buttons .face-button-row {
         display: flex;
         button {
             border-radius: 100%;
         }
+    }
+
+    #top-face-buttons.face-button-row {
+        display: none;
+    }
+
+    :host(.layout-4-face-buttons) #top-face-buttons {
+        display: flex;
     }
 
     #d-pad {
@@ -83,9 +109,15 @@
     }
 </style>
 <div id="kbd">
-    <div id="shoulder">
-        <button data-pad-id="4" data-kbd-key="l" name="shoulder-left"><span>L</span></button>
-        <button data-pad-id="5" data-kbd-key="r" name="shoulder-right"><span>R</span></button>
+    <div id="shoulder-buttons">
+        <div id="bumper-shoulder-buttons" class="shoulder-button-row">
+            <button data-pad-id="4" data-kbd-key="l" name="bumper-left"><kbd>L</kbd></button>
+            <button data-pad-id="5" data-kbd-key="r" name="bumper-right"><kbd>R</kbd></button>
+        </div>
+        <div id="trigger-shoulder-buttons" class="shoulder-button-row">
+            <button data-pad-id="6" data-kbd-key="t" name="trigger-left"><kbd>T</kbd></button>
+            <button data-pad-id="7" data-kbd-key="z" name="trigger-right"><kbd>Z</kbd></button>
+        </div>
     </div>
     <div id="face">
         <table id="d-pad">
@@ -97,30 +129,36 @@
             <tr>
                 <td></td>
                 <td>
-                    <button data-pad-id="12" data-kbd-key="ArrowUp" name="dpad-up"><span>↑</span></button>
+                    <button data-pad-id="12" data-kbd-key="ArrowUp" name="dpad-up"><kbd>↑</kbd></button>
                 </td>
                 <td></td>
             </tr>
             <tr>
                 <td>
-                    <button data-pad-id="14" data-kbd-key="ArrowLeft" name="dpad-left"><span>←</span></button>
+                    <button data-pad-id="14" data-kbd-key="ArrowLeft" name="dpad-left"><kbd>←</kbd></button>
                 </td>
                 <td></td>
                 <td>
-                    <button data-pad-id="15" data-kbd-key="ArrowRight" name="dpad-right"><span>→</span></button>
+                    <button data-pad-id="15" data-kbd-key="ArrowRight" name="dpad-right"><kbd>→</kbd></button>
                 </td>
             </tr>
             <tr>
                 <td></td>
                 <td>
-                    <button data-pad-id="13" data-kbd-key="ArrowDown" name="dpad-down"><span>↓</span></button>
+                    <button data-pad-id="13" data-kbd-key="ArrowDown" name="dpad-down"><kbd>↓</kbd></button>
                 </td>
                 <td></td>
             </tr>
         </table>
         <div id="face-buttons">
-            <button data-pad-id="0" data-kbd-key="a" name="action-primary"><span>A</span></button>
-            <button data-pad-id="1" data-kbd-key="b" name="action-secondary"><span>B</span></button>
+            <div id="top-face-buttons" class="face-button-row">
+                <button data-pad-id="2" data-kbd-key="x" name="face-west"><kbd>X</kbd></button>
+                <button data-pad-id="3" data-kbd-key="y" name="face-north"><kbd>Y</kbd></button>
+            </div>
+            <div id="bottom-face-buttons" class="face-button-row">
+                <button data-pad-id="0" data-kbd-key="a" name="face-south"><kbd>A</kbd></button>
+                <button data-pad-id="1" data-kbd-key="b" name="face-east"><kbd>B</kbd></button>
+            </div>
         </div>
     </div>
 </div>
