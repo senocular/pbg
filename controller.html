@@ -9,23 +9,53 @@
         <script src="./src/apps/controller/index.js" type="module"></script>
     </head>
     <body>
-        <p>
-            Virtual gamepad capable of capturing inputs from mouse clicks (SHIFT (<kbd>⇧</kbd>) to lock), keyboard keys,
-            or game controllers (tested with Xbox One controller).
-        </p>
-        <p id="options">
-            <label>
-                Keyboard mapping:
-                <select id="kbd-mapping-select"></select>
-            </label>
-            <br />
-            <label> <input type="checkbox" id="layout-face-check" /> 4 face buttons </label>
-            <br />
-            <label> <input type="checkbox" id="layout-shoulder-check" /> 4 shoulder buttons </label>
-        </p>
-        <pbg-controller></pbg-controller>
-        <p>
-            <textarea></textarea>
-        </p>
+        <main>
+            <p>
+                Virtual gamepad capable of capturing inputs from mouse clicks (SHIFT (<kbd>⇧</kbd>) to lock), keyboard
+                keys, or game controllers (tested with Xbox One controller).
+            </p>
+            <details id="options">
+                <summary>Options</summary>
+                <div class="content">
+                    <label>
+                        Keyboard mapping:
+                        <select id="kbd-mapping-select"></select>
+                    </label>
+                    <br />
+                    <label> <input type="checkbox" id="layout-face-check" /> 4 face buttons </label>
+                    <br />
+                    <label> <input type="checkbox" id="layout-shoulder-check" /> 4 shoulder buttons </label>
+                </div>
+            </details>
+            <details>
+                <summary>Recording</summary>
+                <div class="content">
+                    <p>
+                        Record
+                        <br />
+                        <button id="record-start-btn">
+                            ⏺️ <span class="inactive">Record</span><span class="active">Recording</span>
+                        </button>
+                        <button id="record-stop-btn">⏹️ Stop</button>
+                    </p>
+                    <p>
+                        Replay
+                        <br />
+                        <button id="record-play-btn">
+                            ▶️ <span class="inactive">Play</span><span class="active">Playing</span>
+                        </button>
+                        <button id="record-pause-btn">⏸️ Pause</button>
+                    </p>
+                </div>
+            </details>
+            <pbg-controller></pbg-controller>
+            <details open>
+                <summary>Events</summary>
+                <textarea></textarea>
+                <div>
+                    <button id="clear-text-btn">Clear</button>
+                </div>
+            </details>
+        </main>
     </body>
 </html>

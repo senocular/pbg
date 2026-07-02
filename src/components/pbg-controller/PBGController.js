@@ -1,5 +1,6 @@
 import { ActiveButtonTracker } from "../../input/ActiveButtonTracker.js";
 import { ControllerInput } from "../../input/ControllerInput.js";
+import { GenericInput } from "../../input/GenericInput.js";
 import { KeyboardInput } from "../../input/KeyboardInput.js";
 import { loadHTMLTemplate } from "../../utils/loadHTMLTemplate.js";
 import { keyboardMappings } from "./keyboardMappings.js";
@@ -18,6 +19,7 @@ export const buttonLabelMappings = {
 class PBGController extends HTMLElement {
     controllerInput = new ControllerInput();
     keyboardInput = new KeyboardInput();
+    manualInput = new GenericInput();
     activeButtonTracker;
 
     /**
@@ -49,6 +51,10 @@ class PBGController extends HTMLElement {
         return this.buttonsActive.get(buttonName) ?? false;
     }
 
+    setActive(buttonName, active) {
+        this.manualInput.setActive(buttonName, active);
+    }
+
     applyKeyboardMapping(name) {
         const mapping = keyboardMappings[name];
         if (!name) {
@@ -68,11 +74,13 @@ class PBGController extends HTMLElement {
     }
 
     start() {
+        cancelAnimationFrame(this.frameLoopId);
         this.activeButtonTracker.start();
         this.controllerInput.start();
         this.keyboardInput.start();
 
         const onFrame = () => {
+            const events = [];
             for (const button of this.buttonsByName.values()) {
                 const { padId, kbdKey } = button.dataset;
 
@@ -80,7 +88,8 @@ class PBGController extends HTMLElement {
                 const newIsActive =
                     this.activeButtonTracker.isActive(button) ||
                     this.controllerInput.isActive(padId) ||
-                    this.keyboardInput.isKeyDown(kbdKey);
+                    this.keyboardInput.isKeyDown(kbdKey) ||
+                    this.manualInput.isActive(button.name);
 
                 if (oldIsActive === newIsActive) {
                     continue;
@@ -94,14 +103,18 @@ class PBGController extends HTMLElement {
 
                 this.buttonsActive.set(button.name, newIsActive);
 
-                this.dispatchEvent(
+                events.push(
                     new CustomEvent("active-change", {
                         detail: {
                             button: button.name,
-                            isActive: newIsActive,
+                            active: newIsActive,
                         },
                     }),
                 );
+            }
+
+            for (const event of events) {
+                this.dispatchEvent(event);
             }
 
             this.frameLoopId = requestAnimationFrame(onFrame);

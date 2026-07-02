@@ -1,13 +1,44 @@
-pbg-controller {
-    display: block;
+main {
     width: 400px;
 }
 
-p {
-    width: 400px;
+pbg-controller {
+    display: block;
+}
+
+details {
+    border: 1px solid black;
+    padding: 0.5em;
+    margin-block: 1em;
+
+    .content {
+        margin: 0.5em;
+    }
 }
 
 textarea {
-    width: 400px;
-    height: 200px;
+    box-sizing: border-box;
+    width: 100%;
+    height: 150px;
+}
+
+button span.active {
+    display: none;
+}
+
+button.active {
+    span.active {
+        display: inherit;
+    }
+    span.inactive {
+        display: none;
+    }
+}
+
+#record-start-btn.active {
+    color: red;
+}
+
+#record-play-btn.active {
+    color: green;
 }
