@@ -28,7 +28,7 @@ function loadMap(map, grid) {
         },
         p: {
             shape: "circle",
-            backgroundColor: "#33cd32",
+            backgroundColor: "#32cd32",
             text: "P",
             textColor: "#ffffff",
         },
