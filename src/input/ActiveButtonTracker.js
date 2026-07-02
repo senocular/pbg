@@ -37,21 +37,33 @@ export class ActiveButtonTracker {
             if (!targetButton) {
                 return;
             }
+            const lockButton = event.shiftKey;
+            const id = event.pointerId;
 
             let activePointerIds = this.buttonsActive.get(targetButton);
             if (!activePointerIds) {
                 activePointerIds = new Set();
                 this.buttonsActive.set(targetButton, activePointerIds);
             }
-            activePointerIds.add(event.pointerId);
+
+            const adjustedId = lockButton ? -id : id;
+            activePointerIds.add(adjustedId);
         };
 
         /**
          * @param {PointerEvent} event
          */
         const removeHandler = (event) => {
-            for (const activePointerIds of this.buttonsActive.values()) {
-                activePointerIds.delete(event.pointerId);
+            const target = event.composedPath().at(0);
+            const targetButton = /** @type {HTMLButtonElement | null} */ (target?.closest("button") ?? null);
+            const id = event.pointerId;
+            const lockButton = event.shiftKey;
+
+            for (const [button, activePointerIds] of this.buttonsActive) {
+                activePointerIds.delete(id);
+                if (!lockButton && button === targetButton) {
+                    activePointerIds.delete(-id);
+                }
             }
         };
 
