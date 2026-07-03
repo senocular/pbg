@@ -3,6 +3,14 @@ import { mod } from "../../utils/mod.js";
 import { SelectAndHighlight } from "./SelectAndHighlight.js";
 import { updatePlayerPosition } from "./shared.js";
 
+/*
+Variation B:
+- Player shoots at selected bunker with "A"
+- Bunker can be selected with dpad while in cover or while shooting
+- Player can change position to other bunkers
+- Hold down "B" to select bunker with dpad to move to, release to move
+*/
+
 const controller = document.querySelector("pbg-controller");
 const enemyBunkers = Array.from(document.querySelectorAll(".bunker.enemy"));
 const friendlyBunkers = Array.from(document.querySelectorAll(".bunker.friendly"));

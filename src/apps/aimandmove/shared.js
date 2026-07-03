@@ -1,7 +1,7 @@
 const player = document.getElementById("player");
 const controller = document.querySelector("pbg-controller");
 
-export function updatePlayerPosition(positionSelect, aimSelect) {
+export function updatePlayerPosition(positionSelect, aimSelect = null, aimDir = 1) {
     const BUNKER_SIZE = 40;
     const POP_OUT_DIST = 25;
 
@@ -9,11 +9,15 @@ export function updatePlayerPosition(positionSelect, aimSelect) {
     const actives = controller.buttonsActive;
     let aimPopOutOffset = actives.get("face-south") ? POP_OUT_DIST : 0;
 
-    if (aimPopOutOffset) {
+    if (aimSelect && aimPopOutOffset) {
         const aimBunker = aimSelect.getTarget();
         if (aimBunker.offsetLeft < playerBunker.offsetLeft) {
             aimPopOutOffset *= -1;
         }
+    }
+
+    if (aimDir && aimPopOutOffset) {
+        aimPopOutOffset *= aimDir;
     }
 
     player.style.left = `${playerBunker.offsetLeft + aimPopOutOffset}px`;

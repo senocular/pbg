@@ -1,19 +1,19 @@
 import { variationA } from "./variationA.js";
 import { variationB } from "./variationB.js";
+import { variationC } from "./variationC.js";
 
 const variationSelect = document.getElementById("variation-select");
 
 const variations = {
     variationA,
     variationB,
+    variationC,
 };
 
 let currVariation;
 
 variationSelect.onchange = () => {
-    currVariation.cleanup();
-    currVariation = variations[variationSelect.value];
-    currVariation.init();
+    setVariation(variationSelect.value);
     variationSelect.blur();
 };
 
@@ -41,12 +41,18 @@ function getParamsVariationKey() {
     return variationKey;
 }
 
-function init() {
-    populateVariationsSelect();
-    const variationKey = getParamsVariationKey() || Object.keys(variations)[0];
+function setVariation(variationKey) {
+    currVariation?.cleanup();
+    document.body.dataset.variation = variationKey;
     currVariation = variations[variationKey];
     variationSelect.value = variationKey;
     currVariation.init();
+}
+
+function init() {
+    populateVariationsSelect();
+    const variationKey = getParamsVariationKey() || Object.keys(variations)[0];
+    setVariation(variationKey);
 }
 
 init();

@@ -1,13 +1,19 @@
 import { mod } from "../../utils/mod.js";
 
+const DEFAULT_OPTIONS = {
+    wrap: true,
+};
+
 export class SelectAndHighlight {
     index = 0;
     targets;
+    options;
     highlightClass;
 
-    constructor(targets, highlightClass) {
+    constructor(targets, highlightClass, options = {}) {
         this.targets = targets;
         this.highlightClass = highlightClass;
+        this.options = { ...DEFAULT_OPTIONS, ...options };
     }
 
     getTarget() {

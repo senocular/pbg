@@ -1,25 +1,36 @@
 import "../../components/pbg-controller/PBGController.js";
+import { clamp } from "../../utils/clamp.js";
 import { mod } from "../../utils/mod.js";
 import { SelectAndHighlight } from "./SelectAndHighlight.js";
 import { updatePlayerPosition } from "./shared.js";
 
 /*
-Variation A:
-- Player shoots at selected bunker with "A"
-- Bunker can only selected with dpad only while shooting
+Variation C:
+- Player shoots at direction player is facing with "A"
+- Direction player is facing is changed with dpad while in cover or while shooting
 - Player can change position to other bunkers
 - Hold down "B" to select bunker with dpad to move to, release to move
 */
 
+const player = document.getElementById("player");
 const controller = document.querySelector("pbg-controller");
-const enemyBunkers = Array.from(document.querySelectorAll(".bunker.enemy"));
 const friendlyBunkers = Array.from(document.querySelectorAll(".bunker.friendly"));
 
-const aimSelect = new SelectAndHighlight(enemyBunkers, "pew-pew");
 const positionSelect = new SelectAndHighlight(friendlyBunkers, "move-here");
+const AIM_STEPS = 15;
+const MAX_AIM_VALUE = 180 / AIM_STEPS;
+let aimValue = 3;
 
 function positionPlayer() {
-    updatePlayerPosition(positionSelect, aimSelect);
+    const aimDir = aimValue > MAX_AIM_VALUE / 2 ? -1 : 1;
+    updatePlayerPosition(positionSelect, null, aimDir);
+}
+
+function updateAim(dir) {
+    aimValue = clamp(aimValue + dir, 0, MAX_AIM_VALUE);
+    const aimAngle = -aimValue * AIM_STEPS;
+    player.style.setProperty("--aim-angle", `${aimAngle}deg`);
+    positionPlayer();
 }
 
 function changeHandler(event) {
@@ -39,9 +50,9 @@ function changeHandler(event) {
 
         case "face-south": {
             if (active) {
-                aimSelect.show();
+                player.classList.add("pew-pew");
             } else {
-                aimSelect.hide();
+                player.classList.remove("pew-pew");
             }
             positionPlayer();
             break;
@@ -51,9 +62,8 @@ function changeHandler(event) {
             if (active) {
                 if (actives.get("face-east")) {
                     positionSelect.move(-1);
-                } else if (actives.get("face-south")) {
-                    aimSelect.move(-1);
-                    positionPlayer();
+                } else {
+                    updateAim(1);
                 }
             }
             break;
@@ -63,9 +73,8 @@ function changeHandler(event) {
             if (active) {
                 if (actives.get("face-east")) {
                     positionSelect.move(1);
-                } else if (actives.get("face-south")) {
-                    aimSelect.move(1);
-                    positionPlayer();
+                } else {
+                    updateAim(-1);
                 }
             }
             break;
@@ -73,14 +82,15 @@ function changeHandler(event) {
     }
 }
 
-export const variationA = {
+export const variationC = {
     init() {
         controller.addEventListener("active-change", changeHandler);
-        positionPlayer();
+        updateAim(0);
     },
     cleanup() {
         controller.removeEventListener("active-change", changeHandler);
-        aimSelect.reset();
+        player.classList.remove("pew-pew");
+        player.style.removeProperty("--aim-angle");
         positionSelect.reset();
     },
 };

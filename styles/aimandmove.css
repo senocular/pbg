@@ -3,6 +3,7 @@
     height: 300px;
     background-color: #aabb99;
     position: relative;
+    overflow: hidden;
 
     & > * {
         position: absolute;
@@ -15,45 +16,21 @@
 
     &.friendly {
         background-color: #330099;
-        &.move-here {
-            &::before {
-                content: "🏃‍♂️";
-                border: 4px solid aqua;
-            }
-        }
     }
     &.enemy {
         background-color: #bb3300;
-        &.aim {
-            &::before {
-                content: "👁";
-                border: 4px solid white;
-            }
-        }
-        &.pew-pew {
-            &::before {
-                content: "💥pew 💥pew";
-                border: 4px solid yellow;
-                color: yellow;
-                font-size: 0.5em;
-            }
-        }
     }
 
-    &.aim,
-    &.pew-pew,
-    &.move-here {
-        &::before {
-            content: "";
-            font-size: 1em;
-            text-align: center;
-            display: block;
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-        }
+    &::before {
+        content: "";
+        font-size: 1em;
+        text-align: center;
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
     }
 }
 
@@ -76,4 +53,50 @@
     }
 
     transition: left 0.5s ease-in-out;
+}
+
+[data-variation="variationB"] {
+    .bunker.enemy.aim::before {
+        content: "👁";
+        border: 4px solid white;
+        font-size: 1em;
+    }
+}
+
+[data-variation="variationA"],
+[data-variation="variationB"] {
+    .bunker.enemy.pew-pew::before {
+        content: "💥pew 💥pew";
+        border: 4px solid yellow;
+        color: yellow;
+        font-size: 0.5em;
+    }
+}
+
+[data-variation="variationA"],
+[data-variation="variationB"],
+[data-variation="variationC"] {
+    .bunker.friendly.move-here::before {
+        content: "🏃‍♂️";
+        border: 4px solid aqua;
+    }
+}
+
+[data-variation="variationC"] {
+    #player {
+        &::after {
+            content: "";
+            display: block;
+            position: absolute;
+            width: 800px;
+            border-top: 2px solid white;
+            left: 50%;
+            top: 50%;
+            transform-origin: 0 0;
+            rotate: var(--aim-angle, 0);
+        }
+        &.pew-pew::after {
+            border-top: 4px dotted yellow;
+        }
+    }
 }
