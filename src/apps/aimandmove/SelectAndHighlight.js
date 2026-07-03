@@ -30,7 +30,7 @@ export class SelectAndHighlight {
     }
 
     reset() {
-        this.index = 0;
         this.hide();
+        this.index = 0;
     }
 }
