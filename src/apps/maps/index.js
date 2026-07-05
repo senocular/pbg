@@ -4,7 +4,7 @@ import "../../components/pbg-grid-map/PBGGridMap.js";
 import "../../components/pbg-grid-block/PBGGridBlock.js";
 
 const pbgGridMap = document.querySelector("pbg-grid-map");
-pbgGridMap.addEventListener("cell-click", (event) => {
+function handleCellApply(event) {
     const { cell } = event.detail;
 
     switch (getDesignerTool()) {
@@ -28,6 +28,9 @@ pbgGridMap.addEventListener("cell-click", (event) => {
             break;
         }
     }
-});
+}
+
+pbgGridMap.addEventListener("cell-click", handleCellApply);
+pbgGridMap.addEventListener("cell-drag-over", handleCellApply);
 
 initMapLoader(null, pbgGridMap);

@@ -17,12 +17,19 @@
         min-width: 10px;
         min-height: 10px;
         line-height: 0;
+        user-select: none;
+        touch-action: none;
+        user-drag: none;
     }
     .cell {
         width: var(--cell-size);
         height: var(--cell-size);
         display: inline-block;
         vertical-align: top;
+
+        & > * {
+            pointer-events: none;
+        }
     }
 </style>
 <div id="cells"></div>

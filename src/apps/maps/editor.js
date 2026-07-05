@@ -33,6 +33,11 @@ export function getDesignerTool() {
     return selectedTool?.value ?? "select";
 }
 
+function setDesignerTool(name) {
+    const toSelectTool = document.querySelector(`[name="tool"][value="${name}"]`);
+    toSelectTool.checked = true;
+}
+
 function updatePreview() {
     blockPreview.setProperties(getDesignerBlockProperties());
 }
@@ -52,4 +57,22 @@ swatchesList.onclick = (event) => {
     }
 
     setDesignerBlockProperties(block.getProperties());
+    setDesignerTool("place");
 };
+
+globalThis.addEventListener("keydown", (event) => {
+    switch (event.key) {
+        case "p": {
+            setDesignerTool("place");
+            break;
+        }
+        case "e": {
+            setDesignerTool("erase");
+            break;
+        }
+        case "s": {
+            setDesignerTool("select");
+            break;
+        }
+    }
+});

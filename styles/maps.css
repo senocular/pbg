@@ -7,3 +7,11 @@
     --block-size: 30px;
     vertical-align: top;
 }
+
+kbd {
+    display: inline-block;
+    border: 2px outset #ddd;
+    background-color: #efefef;
+    padding: 0.1em 0.5em;
+    border-radius: 6px;
+}

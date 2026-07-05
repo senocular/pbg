@@ -28,12 +28,11 @@ function populateVariationsSelect() {
 function getParamsVariationKey() {
     const params = new URLSearchParams(location.search);
     const paramsVariationName = params.get("variation");
-
     if (!paramsVariationName) {
         return null;
     }
-    const variationKey = "variation" + paramsVariationName;
 
+    const variationKey = "variation" + paramsVariationName;
     if (!Object.hasOwn(variations, variationKey)) {
         return null;
     }
